@@ -13,6 +13,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import io.github.pengdst.financialapp.R
 import io.github.pengdst.financialapp.data.remote.ApiClient
 import io.github.pengdst.financialapp.data.remote.ApiService
+import io.github.pengdst.financialapp.data.remote.model.UserDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

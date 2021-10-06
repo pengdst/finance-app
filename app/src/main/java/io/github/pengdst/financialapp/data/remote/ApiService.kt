@@ -1,7 +1,7 @@
 package io.github.pengdst.financialapp.data.remote
 
 import io.github.pengdst.financialapp.data.remote.request.CreateNewUserRequest
-import io.github.pengdst.financialapp.ui.profile.UserDto
+import io.github.pengdst.financialapp.data.remote.model.UserDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

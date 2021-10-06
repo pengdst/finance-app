@@ -1,4 +1,4 @@
-package io.github.pengdst.financialapp.ui.profile
+package io.github.pengdst.financialapp.data.remote.model
 
 
 import com.google.gson.annotations.SerializedName
