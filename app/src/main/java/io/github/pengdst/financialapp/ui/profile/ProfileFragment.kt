@@ -14,6 +14,7 @@ import io.github.pengdst.financialapp.R
 import io.github.pengdst.financialapp.data.remote.ApiClient
 import io.github.pengdst.financialapp.data.remote.ApiService
 import io.github.pengdst.financialapp.data.remote.model.UserDto
+import io.github.pengdst.financialapp.domain.model.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,14 +45,9 @@ class ProfileFragment : Fragment() {
         apiService.getDetailUser(0).enqueue(object : Callback<UserDto> {
             override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                 if (response.isSuccessful) {
-                    val user = response.body()
-
-                    tvName.text = user?.name
-                    tvEmail.text = user?.email
-
-                    Glide.with(requireContext())
-                        .load(user?.imageUrl)
-                        .into(ivImage)
+                    response.body()?.let { dto ->
+                        showUserProfile(dtoToUser(dto))
+                    }
                 }
             }
 
@@ -62,4 +58,20 @@ class ProfileFragment : Fragment() {
 
         })
     }
+
+    private fun showUserProfile(user: User) {
+        tvName.text = user.name
+        tvEmail.text = user.email
+
+        Glide.with(requireContext())
+            .load(user.imageUrl)
+            .into(ivImage)
+    }
+
+    private fun dtoToUser(dto: UserDto) = User(
+        id = dto.id ?: 0,
+        name = dto.name ?: "",
+        email = dto.email ?: "",
+        imageUrl = dto.imageUrl ?: ""
+    )
 }
