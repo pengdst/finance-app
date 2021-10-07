@@ -14,6 +14,7 @@ import io.github.pengdst.financialapp.R
 import io.github.pengdst.financialapp.data.remote.ApiClient
 import io.github.pengdst.financialapp.data.remote.ApiService
 import io.github.pengdst.financialapp.data.remote.model.UserDto
+import io.github.pengdst.financialapp.databinding.FragmentProfileBinding
 import io.github.pengdst.financialapp.domain.model.User
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +26,9 @@ class ProfileFragment : Fragment(), ProfileView {
     private lateinit var tvEmail: TextView
     private lateinit var ivImage: ShapeableImageView
 
+    private var _binding: FragmentProfileBinding? = null
+    val binding: FragmentProfileBinding get() = _binding!!
+
     private val apiService = ApiClient.build().create(ApiService::class.java)
 
     private lateinit var presenter: ProfilePresenter
@@ -32,10 +36,16 @@ class ProfileFragment : Fragment(), ProfileView {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         presenter = ProfilePresenter(this, apiService)
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
