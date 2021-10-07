@@ -19,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), ProfileView {
 
     private lateinit var tvName: TextView
     private lateinit var tvEmail: TextView
@@ -27,11 +27,14 @@ class ProfileFragment : Fragment() {
 
     private val apiService = ApiClient.build().create(ApiService::class.java)
 
+    private lateinit var presenter: ProfilePresenter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        presenter = ProfilePresenter(this, apiService)
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
@@ -42,24 +45,10 @@ class ProfileFragment : Fragment() {
         tvEmail = view.findViewById(R.id.tv_email)
         ivImage = view.findViewById(R.id.iv_image)
 
-        apiService.getDetailUser(0).enqueue(object : Callback<UserDto> {
-            override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
-                if (response.isSuccessful) {
-                    response.body()?.let { dto ->
-                        showUserProfile(dtoToUser(dto))
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<UserDto>, t: Throwable) {
-                Toast.makeText(context, "Ada yang salah.", Toast.LENGTH_LONG).show()
-                Log.e("ProfileFragment", "Failure: ",t)
-            }
-
-        })
+        presenter.loadUserProfile(0)
     }
 
-    private fun showUserProfile(user: User) {
+    override fun showUserProfile(user: User) {
         tvName.text = user.name
         tvEmail.text = user.email
 
@@ -68,10 +57,7 @@ class ProfileFragment : Fragment() {
             .into(ivImage)
     }
 
-    private fun dtoToUser(dto: UserDto) = User(
-        id = dto.id ?: 0,
-        name = dto.name ?: "",
-        email = dto.email ?: "",
-        imageUrl = dto.imageUrl ?: ""
-    )
+    override fun failedLoadUserProfile(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
 }
