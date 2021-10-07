@@ -10,8 +10,8 @@ import retrofit2.Response
 
 class ProfilePresenter(private val view: ProfileView, private val apiService: ApiService) {
 
-    fun loadUserProfile() {
-        apiService.getDetailUser(0).enqueue(object : Callback<UserDto> {
+    fun loadUserProfile(userId: Int) {
+        apiService.getDetailUser(userId).enqueue(object : Callback<UserDto> {
             override fun onResponse(call: Call<UserDto>, response: Response<UserDto>) {
                 if (response.isSuccessful) {
                     response.body()?.let { dto ->
