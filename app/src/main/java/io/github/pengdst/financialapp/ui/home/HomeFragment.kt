@@ -17,6 +17,7 @@ import io.github.pengdst.financialapp.data.local.db.AppDatabase
 import io.github.pengdst.financialapp.data.local.db.dao.FlowerDao
 import io.github.pengdst.financialapp.data.local.db.model.FlowerEntity
 import io.github.pengdst.financialapp.ui.addFlower.AddFlowerFragment
+import io.github.pengdst.financialapp.ui.editFlower.EditFlowerFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,6 +48,15 @@ class HomeFragment : Fragment() {
         flowerAdapter.setOnItemClickListener(object : FlowerAdapter.ItemClick<Flower> {
             override fun onItemClick(view: View, data: Flower, position: Int) {
                 Toast.makeText(context, "Bunga ${data.flowerName} diklik", Toast.LENGTH_SHORT).show()
+                val editFlowerFragment = EditFlowerFragment.newInstance(
+                    flowerId = data.flowerId,
+                    flowerName = data.flowerName,
+                    flowerImage = data.flowerImageUrl
+                )
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, editFlowerFragment)
+                    .addToBackStack(editFlowerFragment.tag)
+                    .commit()
             }
         })
 
@@ -114,12 +124,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun entityToFlower(entity: FlowerEntity) = Flower(
+        flowerId = entity.id,
         flowerName = entity.flowerName,
         flowerImageUrl = entity.flowerImageUrl
     )
 
     private fun flowerToEntity(flower: Flower) = FlowerEntity(
-        id = 0,
+        id = flower.flowerId,
         flowerName = flower.flowerName,
         flowerImageUrl = flower.flowerImageUrl
     )
