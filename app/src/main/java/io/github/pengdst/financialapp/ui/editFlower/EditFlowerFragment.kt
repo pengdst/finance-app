@@ -29,6 +29,7 @@ class EditFlowerFragment : Fragment() {
     private lateinit var etFlowerName: EditText
     private lateinit var etFlowerUrl: EditText
     private lateinit var btnSaveFlower: Button
+    private lateinit var btnDeleteFlower: Button
 
     private lateinit var flowerDao: FlowerDao
 
@@ -56,11 +57,15 @@ class EditFlowerFragment : Fragment() {
         etFlowerName = view.findViewById(R.id.et_flower_name)
         etFlowerUrl = view.findViewById(R.id.et_flower_url)
         btnSaveFlower = view.findViewById(R.id.btn_save)
+        btnDeleteFlower = view.findViewById(R.id.btn_delete)
 
         etFlowerName.setText(flowerName)
         etFlowerUrl.setText(flowerImageUrl)
         btnSaveFlower.setOnClickListener {
             updateFlower(etFlowerName.text.toString(), etFlowerUrl.text.toString())
+        }
+        btnDeleteFlower.setOnClickListener {
+            deleteFlower()
         }
     }
 
@@ -76,6 +81,25 @@ class EditFlowerFragment : Fragment() {
                 )
             }catch (e: Exception) {
                 Log.e("EditFlowerFragment", "updateFlower: ", e)
+            }
+            withContext(Dispatchers.Main) {
+                requireActivity().onBackPressed()
+            }
+        }
+    }
+
+    private fun deleteFlower() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                flowerDao.deleteFlower(
+                    flower = FlowerEntity(
+                        id = flowerId,
+                        flowerName = flowerName,
+                        flowerImageUrl = flowerImageUrl
+                    )
+                )
+            }catch (e: Exception) {
+                Log.e("EditFlowerFragment", "deleteFlower: ", e)
             }
             withContext(Dispatchers.Main) {
                 requireActivity().onBackPressed()

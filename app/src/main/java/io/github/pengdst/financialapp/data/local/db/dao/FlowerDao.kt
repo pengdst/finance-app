@@ -1,9 +1,6 @@
 package io.github.pengdst.financialapp.data.local.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import io.github.pengdst.financialapp.data.local.db.model.FlowerEntity
 
 @Dao
@@ -20,5 +17,8 @@ interface FlowerDao {
 
     @Update
     suspend fun updateFlower(flower: FlowerEntity)
+
+    @Delete
+    suspend fun deleteFlower(flower: FlowerEntity)
 
 }
