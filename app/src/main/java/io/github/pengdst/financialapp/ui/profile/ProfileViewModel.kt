@@ -1,12 +1,21 @@
 package io.github.pengdst.financialapp.ui.profile
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.github.pengdst.financialapp.domain.model.User
 
-class ProfilePresenter(private val view: ProfileView) {
+class ProfileViewModel() : ViewModel() {
+
+    private val _userLivedata = MutableLiveData<User>()
+    val userLiveData: LiveData<User> = _userLivedata
+
+    private val _errorLivedata = MutableLiveData<String>()
+    val errorLiveData: LiveData<String> = _errorLivedata
 
     fun loadUserProfile(userId: Int) {
         try {
-            view.showUserProfile(
+            _userLivedata.postValue(
                 User(
                     email = "donald@crispychicken.com",
                     id = userId,
@@ -15,7 +24,7 @@ class ProfilePresenter(private val view: ProfileView) {
                 )
             )
         } catch (e: Exception) {
-            view.failedLoadUserProfile("Gagal Mengambil Data!")
+            _errorLivedata.postValue("Gagal Mengambil Data!")
         }
     }
 
