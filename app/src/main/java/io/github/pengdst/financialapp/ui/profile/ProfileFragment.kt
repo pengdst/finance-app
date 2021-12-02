@@ -1,7 +1,6 @@
 package io.github.pengdst.financialapp.ui.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,19 +12,13 @@ import com.google.android.material.imageview.ShapeableImageView
 import io.github.pengdst.financialapp.R
 import io.github.pengdst.financialapp.data.remote.ApiClient
 import io.github.pengdst.financialapp.data.remote.ApiService
-import io.github.pengdst.financialapp.data.remote.model.UserDto
 import io.github.pengdst.financialapp.domain.model.User
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ProfileFragment : Fragment(), ProfileView {
 
     private lateinit var tvName: TextView
     private lateinit var tvEmail: TextView
     private lateinit var ivImage: ShapeableImageView
-
-    private val apiService = ApiClient.build().create(ApiService::class.java)
 
     private lateinit var presenter: ProfilePresenter
 
@@ -34,7 +27,7 @@ class ProfileFragment : Fragment(), ProfileView {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        presenter = ProfilePresenter(this, apiService)
+        presenter = ProfilePresenter(this)
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
