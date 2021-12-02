@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import io.github.pengdst.financialapp.R
-import io.github.pengdst.financialapp.data.remote.ApiClient
-import io.github.pengdst.financialapp.data.remote.ApiService
 import io.github.pengdst.financialapp.domain.model.User
 
 class ProfileFragment : Fragment(), ProfileView {
